@@ -5,10 +5,9 @@ import (
 	"github.com/stretchr/testify/require"
 	"os"
 	"testing"
-	"webcrawler/awsx"
-	"webcrawler/dynamoDBx"
-
-	"webcrawler/queue"
+	"webcrawler/cmd/services/webcrawler/internal/dynamoDBx"
+	"webcrawler/pkg/awsx"
+	"webcrawler/pkg/queue"
 )
 
 func setup(t *testing.T, ctx context.Context) Server {

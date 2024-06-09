@@ -4,7 +4,7 @@ import (
 	"context"
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb"
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb/types"
-	"webcrawler/site"
+	"webcrawler/pkg/site"
 )
 
 func (db *DB) RemovePage(ctx context.Context, website site.Page) error {

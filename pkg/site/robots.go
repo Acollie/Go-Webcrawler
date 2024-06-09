@@ -2,12 +2,11 @@ package site
 
 import (
 	"fmt"
+	"github.com/temoto/robotstxt"
 	"net/http"
 	"net/url"
 	"time"
-	"webcrawler/spider"
-
-	"github.com/temoto/robotstxt"
+	"webcrawler/pkg/spider"
 )
 
 func FetchRobots(baseUrl string) (bool, error) {

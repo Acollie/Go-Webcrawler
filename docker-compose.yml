@@ -37,3 +37,21 @@ services:
       - "./docker/neo4j/logs:/logs"
       - "./docker/neo4j/import:/var/lib/neo4j/import"
       - "./docker/neo4j/plugins:/plugins"
+  openSearch:
+    image: opensearchproject/opensearch
+    container_name: opensearch
+    ports:
+      - "9200:9200"
+      - "9600:9600"
+    environment:
+      - "discovery.type=single-node"
+      - "cluster.name=opensearch-cluster"
+      - "bootstrap.memory_lock=true"
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - "./docker/opensearch/data:/usr/share/elasticsearch/data"
+      - "./docker/opensearch/logs:/usr/share/elasticsearch/logs"

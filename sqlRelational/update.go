@@ -3,7 +3,7 @@ package sqlRelational
 import (
 	"fmt"
 	"reflect"
-	"webcrawler/site"
+	"webcrawler/pkg/site"
 )
 
 func (c *SqlDB) UpdateWebsite(page site.Page, website site.Website) error {

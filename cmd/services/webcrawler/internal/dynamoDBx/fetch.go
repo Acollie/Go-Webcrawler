@@ -5,7 +5,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/feature/dynamodb/attributevalue"
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb"
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb/types"
-	"webcrawler/site"
+	"webcrawler/pkg/site"
 )
 
 func (db *DB) FetchWebsite(ctx context.Context, website string) (*site.Website, error) {
