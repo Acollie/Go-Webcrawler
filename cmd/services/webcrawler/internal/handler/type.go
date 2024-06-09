@@ -5,15 +5,17 @@ import (
 	"webcrawler/cmd/services/webcrawler/internal/config"
 	"webcrawler/cmd/services/webcrawler/internal/dynamoDBx"
 	"webcrawler/cmd/services/webcrawler/internal/graphx"
+	"webcrawler/pkg/openSearchx"
 	"webcrawler/pkg/queue"
 	"webcrawler/pkg/site"
 )
 
 type Server struct {
-	Queue  *queue.Handler
-	Db     *dynamoDBx.DB
-	Graph  *graphx.Graph
-	Config *config.IgnoreList
+	Queue         *queue.Handler
+	Db            *dynamoDBx.DB
+	Graph         *graphx.Graph
+	Config        *config.IgnoreList
+	SearchHandler *openSearchx.OpenSearchHandler
 }
 
 type DBi interface {
@@ -26,12 +28,13 @@ type DBi interface {
 	UpdateWebsite(context.Context, site.Page, site.Website) error
 }
 
-func New(db *dynamoDBx.DB, queue *queue.Handler, graph *graphx.Graph, config *config.IgnoreList) Server {
+func New(db *dynamoDBx.DB, queue *queue.Handler, graph *graphx.Graph, config *config.IgnoreList, search *openSearchx.OpenSearchHandler) Server {
 	return Server{
-		Db:     db,
-		Queue:  queue,
-		Graph:  graph,
-		Config: config,
+		Db:            db,
+		Queue:         queue,
+		Graph:         graph,
+		Config:        config,
+		SearchHandler: search,
 	}
 
 }

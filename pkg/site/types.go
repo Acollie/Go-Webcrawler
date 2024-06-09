@@ -9,13 +9,13 @@ type pageI interface {
 	Save(website Page) error
 }
 type Page struct {
-	Url         string            `dynamodbav:"PageURL"`
-	Title       string            `dynamodbav:"title"`
-	Body        string            `dynamodbav:"body"`
-	BaseURL     string            `dynamodbav:"BaseURL"`
-	Meta        map[string]string `dynamodbav:"meta"`
-	CrawledDate uint64            `dynamodbav:"crawledDate"`
-	Links       []string          `dynamodbav:"-"`
+	Url         string            `dynamodbav:"PageURL" json:"url,omitempty"`
+	Title       string            `dynamodbav:"title" json:"title,omitempty"`
+	Body        string            `dynamodbav:"body" json:"body,omitempty"`
+	BaseURL     string            `dynamodbav:"BaseURL" json:"baseURL,omitempty"`
+	Meta        map[string]string `dynamodbav:"-" json:"meta,omitempty"`
+	CrawledDate uint64            `dynamodbav:"crawledDate" json:"crawledDate,omitempty"`
+	Links       []string          `dynamodbav:"-" `
 }
 
 type Website struct {

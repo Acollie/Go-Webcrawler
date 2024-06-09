@@ -10,6 +10,7 @@ import (
 	"webcrawler/cmd/services/webcrawler/internal/graphx"
 	"webcrawler/cmd/services/webcrawler/internal/handler"
 	"webcrawler/pkg/awsx"
+	"webcrawler/pkg/openSearchx"
 	"webcrawler/pkg/queue"
 )
 
@@ -19,10 +20,6 @@ func main() {
 	ctx := context.Background()
 	if err != nil {
 		log.Fatalf("Failed to load .env file with error: %v", err)
-	}
-
-	if err != nil {
-		log.Fatalf("Cannot load the AWS config: %s", err)
 	}
 
 	cfg, err := awsx.GetConfig(ctx)
@@ -43,9 +40,12 @@ func main() {
 		log.Fatalf("Cannot connect to the graph database: %s", err)
 	}
 	graph := graphx.New(graphConn)
+
+	openSearch := openSearchx.New(os.Getenv("OPENSEARCH_URL"), os.Getenv("OPENSEARCH_INDEX"))
+
 	config := localConfig.Fetch()
 
-	server := handler.New(dbClient, sqsClient, graph, config)
+	server := handler.New(dbClient, sqsClient, graph, config, openSearch)
 
 	initialLinks := []string{
 		"https://blog.alexcollie.com/",
