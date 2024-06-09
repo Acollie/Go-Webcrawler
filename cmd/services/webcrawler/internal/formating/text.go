@@ -5,7 +5,7 @@ import (
 	"net/url"
 	"path"
 	"strings"
-	"webcrawler/queue"
+	"webcrawler/pkg/queue"
 )
 
 const (

@@ -5,7 +5,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/feature/dynamodb/attributevalue"
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb"
 	"reflect"
-	"webcrawler/site"
+	"webcrawler/pkg/site"
 )
 
 func (db *DB) UpdateWebsite(ctx context.Context, page site.Page, website site.Website) error {

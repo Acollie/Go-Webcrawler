@@ -5,7 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"log"
-	"webcrawler/site"
+	"webcrawler/pkg/site"
 )
 
 func (c *SqlDB) FetchWebsite(url string) (*site.Website, error) {

@@ -9,7 +9,7 @@ import (
 	"regexp"
 	"strings"
 	"time"
-	"webcrawler/queue"
+	"webcrawler/pkg/queue"
 )
 
 const (

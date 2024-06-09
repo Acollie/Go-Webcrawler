@@ -2,11 +2,11 @@ package handler
 
 import (
 	"context"
-	"webcrawler/config"
-	"webcrawler/dynamoDBx"
-	"webcrawler/graphx"
-	"webcrawler/queue"
-	"webcrawler/site"
+	"webcrawler/cmd/services/webcrawler/internal/config"
+	"webcrawler/cmd/services/webcrawler/internal/dynamoDBx"
+	"webcrawler/cmd/services/webcrawler/internal/graphx"
+	"webcrawler/pkg/queue"
+	"webcrawler/pkg/site"
 )
 
 type Server struct {

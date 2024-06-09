@@ -5,12 +5,12 @@ import (
 	"github.com/joho/godotenv"
 	"log"
 	"os"
-	"webcrawler/awsx"
-	localConfig "webcrawler/config"
-	"webcrawler/dynamoDBx"
-	"webcrawler/graphx"
-	"webcrawler/handler"
-	"webcrawler/queue"
+	localConfig "webcrawler/cmd/services/webcrawler/internal/config"
+	"webcrawler/cmd/services/webcrawler/internal/dynamoDBx"
+	"webcrawler/cmd/services/webcrawler/internal/graphx"
+	"webcrawler/cmd/services/webcrawler/internal/handler"
+	"webcrawler/pkg/awsx"
+	"webcrawler/pkg/queue"
 )
 
 func main() {

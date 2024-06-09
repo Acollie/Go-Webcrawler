@@ -3,7 +3,7 @@ package formating
 import (
 	"github.com/stretchr/testify/require"
 	"testing"
-	"webcrawler/site"
+	"webcrawler/pkg/site"
 )
 
 func TestFetchLinks(t *testing.T) {

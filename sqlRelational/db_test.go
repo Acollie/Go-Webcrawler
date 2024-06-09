@@ -5,7 +5,7 @@ import (
 	"os"
 	"reflect"
 	"testing"
-	"webcrawler/site"
+	"webcrawler/pkg/site"
 )
 
 func setupDB(db *SqlDB) {

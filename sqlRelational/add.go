@@ -2,7 +2,7 @@ package sqlRelational
 
 import (
 	"fmt"
-	"webcrawler/site"
+	"webcrawler/pkg/site"
 )
 
 func (c *SqlDB) AddWebsite(website site.Website) error {

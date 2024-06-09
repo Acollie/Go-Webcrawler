@@ -4,8 +4,8 @@ import (
 	"context"
 	"log"
 	"sync"
-	"webcrawler/formating"
-	"webcrawler/site"
+	"webcrawler/cmd/services/webcrawler/internal/formating"
+	site2 "webcrawler/pkg/site"
 )
 
 func (h *Server) Scan(ctx context.Context) {
@@ -27,7 +27,7 @@ func (h *Server) Scan(ctx context.Context) {
 			go func() {
 				defer wg.Done()
 
-				valid, err := site.FetchRobots(link.Url)
+				valid, err := site2.FetchRobots(link.Url)
 				if err != nil {
 					log.Printf("fetching robots %v", err)
 				}
@@ -37,7 +37,7 @@ func (h *Server) Scan(ctx context.Context) {
 					return
 				}
 
-				page, resp, err := site.NewPage(link.Url)
+				page, resp, err := site2.NewPage(link.Url)
 				if err != nil {
 					log.Printf("fetching page %v", err)
 					h.Queue.Remove(ctx, *link.Handler)
@@ -52,7 +52,7 @@ func (h *Server) Scan(ctx context.Context) {
 				queueMessage := formating.ResolveLinkToQueueMessage(links)
 				page.Links = links
 
-				website := site.NewWebsite(link.Url, queueMessage)
+				website := site2.NewWebsite(link.Url, queueMessage)
 
 				err = h.Queue.BatchAdd(ctx, queueMessage)
 				if err != nil {
