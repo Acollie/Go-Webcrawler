@@ -3,23 +3,19 @@ package sqlRelational
 const (
 	updateWebsite   = ``
 	checkForWebsite = ``
-	port            = 5432
 
-	addWebsite = `create table website
-	(
-		baseurl       text
-			constraint website_pk_2
-				unique,
-		promancevalue integer,
-		uuid          uuid default uuid_generate_v4() not null
-			primary key
-	);
+	addWebsite = `CREATE TABLE website (
+    baseurl TEXT NOT NULL UNIQUE, -- UNIQUE constraint for baseurl
+    promancevalue INT, -- Adjusted integer type to INT
+    uuid CHAR(36) NOT NULL DEFAULT (UUID()), -- MariaDB uses UUID() for generating UUIDs
+    PRIMARY KEY (uuid) -- Primary key defined as UUID
+);
 
-	alter table website
-		owner to root;
+ALTER TABLE website
+    OWNER TO 'root'; -- Adjusted the owner assignment syntax for MariaDB compatibility
 
-	create index website_baseurl_index
-		on website (baseurl);`
+CREATE INDEX website_baseurl_index
+    ON website (baseurl); -- Index for baseurl`
 
 	addPage = `create table page
 	(

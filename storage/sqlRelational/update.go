@@ -1,20 +1,21 @@
 package sqlRelational
 
 import (
+	"context"
 	"fmt"
 	"reflect"
 	"webcrawler/site"
 )
 
-func (c *SqlDB) UpdateWebsite(page site.Page, website site.Website) error {
+func (c *SqlDB) UpdateWebsite(ctx context.Context, page site.Page, website site.Website) error {
 
-	websiteDB, err := c.FetchWebsite(page.BaseURL)
+	websiteDB, err := c.FetchWebsite(ctx, page.BaseURL)
 	if err != nil {
 		return err
 	}
 	if reflect.DeepEqual(websiteDB, &site.Website{}) && err == nil {
 		println("websiteNot found")
-		err = c.AddWebsite(website)
+		err = c.AddWebsite(ctx, website)
 		if err != nil {
 			return err
 		}
@@ -27,7 +28,7 @@ func (c *SqlDB) UpdateWebsite(page site.Page, website site.Website) error {
 	return err
 }
 
-func (c *SqlDB) UpdatePage(page site.Page) error {
+func (c *SqlDB) UpdatePage(ctx context.Context, page site.Page) error {
 
 	return nil
 }

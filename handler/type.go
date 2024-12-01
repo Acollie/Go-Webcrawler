@@ -3,20 +3,20 @@ package handler
 import (
 	"context"
 	"webcrawler/config"
-	"webcrawler/dynamoDBx"
-	"webcrawler/graphx"
 	"webcrawler/queue"
 	"webcrawler/site"
+	"webcrawler/storage/dynamoDBx"
+	"webcrawler/storage/graphx"
 )
 
 type Server struct {
 	Queue  *queue.Handler
-	Db     *dynamoDBx.DB
+	Db     Storer
 	Graph  *graphx.Graph
 	Config *config.IgnoreList
 }
 
-type DBi interface {
+type Storer interface {
 	FetchWebsite(context.Context, string) (*site.Website, error)
 	FetchPage(context.Context, string) (*site.Page, error)
 	AddPage(context.Context, site.Page) error

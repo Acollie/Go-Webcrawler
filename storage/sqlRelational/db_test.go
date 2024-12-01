@@ -1,14 +1,20 @@
 package sqlRelational
 
 import (
+	"context"
+	"fmt"
 	"github.com/stretchr/testify/require"
-	"os"
+	"github.com/testcontainers/testcontainers-go/modules/mariadb"
+	"log"
 	"reflect"
 	"testing"
 	"webcrawler/site"
 )
 
 func setupDB(db *SqlDB) {
+	if _, err := db.Client.Exec(`GRANT ALL PRIVILEGES ON website.* TO 'root'@'localhost'; FLUSH PRIVILEGES;`); err != nil {
+		panic(err)
+	}
 	if _, err := db.Client.Exec(addWebsite); err != nil {
 		panic(err)
 	}
@@ -28,11 +34,37 @@ func teardown(db *SqlDB) {
 }
 
 func TestDB(t *testing.T) {
-	if os.Getenv("ENVIRONMENT") != "local" {
-		t.Skipf("skipping since not local")
+	ctx := context.Background()
+	mariaDBContainer, err := mariadb.Run(ctx, "mariadb:11.0.3")
+	if err != nil {
+		log.Fatalf("Failed to run MariaDB container: %v", err)
+	}
+	defer func() {
+		_ = mariaDBContainer.Terminate(ctx) // Ensure container is terminated
+	}()
+
+	// Get the port of the running container
+	portStr, err := mariaDBContainer.MappedPort(ctx, "3306")
+	if err != nil {
+		log.Fatalf("Failed to get port endpoint: %v", err)
 	}
 
-	sqlDB := New("webcrawlertest")
+	// Parse port from string to int if needed
+	var port int
+	_, err = fmt.Sscanf(string(portStr), "%d", &port)
+	if err != nil {
+		log.Fatalf("Failed to parse port: %v", err)
+	}
+
+	host := "localhost"
+	password := "test"
+	user := "test"
+	dbName := "test"
+
+	sqlDB, err := New(host, password, user, dbName, port)
+	if err != nil {
+		log.Fatalf("Failed to initialize SQL DB: %v", err)
+	}
 	setupDB(sqlDB)
 	defer teardown(sqlDB)
 
@@ -42,10 +74,10 @@ func TestDB(t *testing.T) {
 			ProminenceValue: 1,
 		}
 
-		err := sqlDB.AddWebsite(website)
+		err := sqlDB.AddWebsite(ctx, website)
 		require.NoError(t, err)
 
-		websiteReturned, err := sqlDB.FetchWebsite(website.Url)
+		websiteReturned, err := sqlDB.FetchWebsite(ctx, website.Url)
 		require.NoError(t, err)
 		require.Equal(t, &website, websiteReturned)
 	})
@@ -58,22 +90,22 @@ func TestDB(t *testing.T) {
 			BaseURL: "http://www.google.com",
 		}
 
-		err := sqlDB.AddPage(page)
+		err := sqlDB.AddPage(ctx, page)
 		require.NoError(t, err)
 
-		pageReturned, err := sqlDB.FetchPage(page.Url)
+		pageReturned, err := sqlDB.FetchPage(ctx, page.Url)
 		require.NoError(t, err)
 		require.Equal(t, &page, pageReturned)
 	})
 
 	t.Run("Fetch page empty", func(t *testing.T) {
-		pageReturn, err := sqlDB.FetchPage("does not exist")
+		pageReturn, err := sqlDB.FetchPage(ctx, "does not exist")
 		require.NoError(t, err)
 		require.Equal(t, reflect.DeepEqual(pageReturn, &site.Page{}), true)
 	})
 
 	t.Run("Fetch website empty", func(t *testing.T) {
-		pageReturn, err := sqlDB.FetchWebsite("does not exist website")
+		pageReturn, err := sqlDB.FetchWebsite(ctx, "does not exist website")
 		require.NoError(t, err)
 		require.Equal(t, reflect.DeepEqual(pageReturn, &site.Website{}), true)
 	})
@@ -90,9 +122,9 @@ func TestDB(t *testing.T) {
 			Url:             "http://www.google.com",
 			ProminenceValue: 1,
 		}
-		err := sqlDB.UpdateWebsite(page, website)
+		err := sqlDB.UpdateWebsite(ctx, page, website)
 		require.NoError(t, err)
-		returnDB, err := sqlDB.FetchWebsite(website.Url)
+		returnDB, err := sqlDB.FetchWebsite(ctx, website.Url)
 		require.NoError(t, err)
 		require.Equal(t, returnDB.ProminenceValue, website.ProminenceValue+1)
 

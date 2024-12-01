@@ -7,10 +7,10 @@ import (
 	"os"
 	"webcrawler/awsx"
 	localConfig "webcrawler/config"
-	"webcrawler/dynamoDBx"
-	"webcrawler/graphx"
 	"webcrawler/handler"
 	"webcrawler/queue"
+	"webcrawler/storage/dynamoDBx"
+	"webcrawler/storage/graphx"
 )
 
 func main() {

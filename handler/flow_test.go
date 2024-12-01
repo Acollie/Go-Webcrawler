@@ -6,7 +6,7 @@ import (
 	"os"
 	"testing"
 	"webcrawler/awsx"
-	"webcrawler/dynamoDBx"
+	"webcrawler/storage/dynamoDBx"
 
 	"webcrawler/queue"
 )
