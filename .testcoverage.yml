@@ -23,5 +23,3 @@ threshold:
   # (optional; default 0) 
   # Minimum overall project coverage percentage required.
   total: 95
-
-fail_below_threshold: false
